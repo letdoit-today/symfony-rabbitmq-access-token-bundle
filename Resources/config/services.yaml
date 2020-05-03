@@ -1,0 +1,28 @@
+parameters:
+    letdoittoday.access_token_class: App\Entity\AccessToken
+
+services:
+    DIT\RabbitMQAccessTokenBundle\Service\AccessTokenEmitterService:
+        arguments:
+            - '@parameter_bag'
+            - '@jms_serializer'
+
+    DIT\RabbitMQAccessTokenBundle\Service\AccessTokenReceiverService:
+        arguments:
+            - '@parameter_bag'
+            - '@jms_serializer'
+            - '@doctrine.orm.entity_manager'
+
+    letdoittoday_access_token_event_listener:
+        class: DIT\RabbitMQAccessTokenBundle\EventListener\AccessTokenListener
+        arguments:
+            - '@DIT\RabbitMQAccessTokenBundle\Service\AccessTokenEmitterService'
+        tags:
+            - { name: doctrine.orm.entity_listener }
+
+    letdoittoday_access_token_message_listener:
+        class: DIT\RabbitMQAccessTokenBundle\Command\DITListenAccessTokenMessageCommand
+        arguments:
+            - '@DIT\RabbitMQAccessTokenBundle\Service\AccessTokenReceiverService'
+        tags:
+            - { name: console.command }
