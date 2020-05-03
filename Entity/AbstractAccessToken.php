@@ -28,19 +28,19 @@ abstract class AbstractAccessToken implements AccessTokenInterface
      * @ORM\Column(type="integer")
      * @Serializer\Type("int")
      */
-    private $userId;
+    protected $userId;
 
     /**
      * @ORM\Column(type="simple_array")
      * @Serializer\Type("array<string>")
      */
-    private $roles = [];
+    protected $roles = [];
 
     /**
      * @ORM\Column(type="datetime")
      * @Serializer\Type("DateTime")
      */
-    private $expiredAt;
+    protected $expiredAt;
 
     public function getId(): ?int
     {
